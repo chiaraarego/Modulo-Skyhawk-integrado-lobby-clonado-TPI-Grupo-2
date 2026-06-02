@@ -20,7 +20,7 @@ public class ModuloPrueba implements ModuloJuego {
 
   public String getNombreModulo() { return "Prueba"; }
   public String getDescripcion() { return "Módulo de prueba del sistema Home"; }
-  public String getNombreAvion() { return "A-4 SKYHAWK"; }
+  public String getNombreAvion() { return "AVION PRUEBA"; }
 
   public void inicializarContexto(ContextoJuego ctx) { this.contexto = ctx; }
 
