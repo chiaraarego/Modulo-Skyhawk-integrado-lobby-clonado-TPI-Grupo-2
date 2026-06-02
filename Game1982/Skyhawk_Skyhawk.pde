@@ -1,7 +1,7 @@
 class Skyhawk extends Nave
 {
-  int velocidad;   // cuantos pixeles avanza en cada paso
-  PImage sprite;   // el dibujo del avion
+  private int velocidad;   // cuantos pixeles avanza en cada paso
+  private PImage sprite;   // el dibujo del avion
 
   Skyhawk(int xPos, int yPos)
   {

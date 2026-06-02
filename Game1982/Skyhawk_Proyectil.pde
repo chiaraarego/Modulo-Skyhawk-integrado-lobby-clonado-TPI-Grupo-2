@@ -3,9 +3,9 @@
 // cada una y de que color se dibuja.
 class Proyectil
 {
-  int x;
-  int y;
-  int velocidad;
+  protected int x;
+  protected int y;
+  protected int velocidad;
 
   Proyectil(int xPos, int yPos)
   {
@@ -22,4 +22,8 @@ class Proyectil
   void dibujar()
   {
   }
+
+  // Getters (encapsulamiento): la posicion se lee desde afuera solo por aca.
+  public int getX() { return this.x; }
+  public int getY() { return this.y; }
 }

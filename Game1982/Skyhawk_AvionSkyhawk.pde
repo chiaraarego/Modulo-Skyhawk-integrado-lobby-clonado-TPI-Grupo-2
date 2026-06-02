@@ -71,8 +71,8 @@ class AvionSkyhawk implements ModuloJuego {
     long tiempoSeg = tiempoInicio > 0
         ? (System.currentTimeMillis() - tiempoInicio) / 1000
         : 0;
-    int puntaje = (game != null) ? game.puntaje : 0;
-    int derribados = (game != null) ? game.enemigosDerribados : 0;
+    int puntaje = (game != null) ? game.getPuntaje() : 0;
+    int derribados = (game != null) ? game.getEnemigosDerribados() : 0;
     // Es un survival: no hay condicion de victoria, asi que cada partida
     // terminada cuenta como jugada (1) y perdida (1).
     return new EstadisticasGenerales(

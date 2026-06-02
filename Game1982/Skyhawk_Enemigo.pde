@@ -1,7 +1,7 @@
 class Enemigo extends Nave
 {
-  int velocidad;   // cuantos pixeles baja en cada paso
-  PImage sprite;   // el dibujo del enemigo
+  private int velocidad;   // cuantos pixeles baja en cada paso
+  private PImage sprite;   // el dibujo del enemigo
 
   Enemigo(int xPos, int yPos)
   {

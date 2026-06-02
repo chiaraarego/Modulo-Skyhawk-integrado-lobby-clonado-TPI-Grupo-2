@@ -1,11 +1,11 @@
 class GameController
 {
-  Skyhawk skyhawk;                          // el avion del jugador
-  ArrayList<Enemigo> enemigos;              // los aviones enemigos que caen
-  ArrayList<ProyectilSkyhawk> balasJugador; // las balas que dispara el avion
-  ArrayList<ProyectilEnemigo> balasEnemigo; // las balas que disparan los enemigos
-  int puntaje;
-  int enemigosDerribados;
+  private Skyhawk skyhawk;                          // el avion del jugador
+  private ArrayList<Enemigo> enemigos;              // los aviones enemigos que caen
+  private ArrayList<ProyectilSkyhawk> balasJugador; // las balas que dispara el avion
+  private ArrayList<ProyectilEnemigo> balasEnemigo; // las balas que disparan los enemigos
+  private int puntaje;
+  private int enemigosDerribados;
 
   GameController()
   {
@@ -37,8 +37,8 @@ class GameController
   // La llama keyPressed() (en el archivo principal) cuando se aprieta espacio.
   void dispararSkyhawk()
   {
-    int xBala = skyhawk.x;
-    int yBala = skyhawk.y - 20;   // sale desde la punta del avion
+    int xBala = skyhawk.getX();
+    int yBala = skyhawk.getY() - 20;   // sale desde la punta del avion
     balasJugador.add(new ProyectilSkyhawk(xBala, yBala));
   }
 
@@ -59,8 +59,8 @@ class GameController
       e.actualizar();
       if (e.intentaDisparar())
       {
-        // La bala sale desde abajo del enemigo (e.y + 20) y baja por la pantalla.
-        balasEnemigo.add(new ProyectilEnemigo(e.x, e.y + 20));
+        // La bala sale desde abajo del enemigo (e.getY() + 20) y baja por la pantalla.
+        balasEnemigo.add(new ProyectilEnemigo(e.getX(), e.getY() + 20));
       }
     }
 
@@ -89,7 +89,7 @@ class GameController
       boolean golpeo = false;
       for (Enemigo e : enemigos)
       {
-        if (e.colisionaCon(bala.x, bala.y))
+        if (e.colisionaCon(bala.getX(), bala.getY()))
         {
           e.recibirDanio(1);
           golpeo = true;
@@ -102,7 +102,7 @@ class GameController
         }
       }
       // La bala se queda solo si no golpeo a nadie y sigue dentro de la pantalla.
-      if (!golpeo && bala.y >= 0)
+      if (!golpeo && bala.getY() >= 0)
       {
         balasQueSiguen.add(bala);
       }
@@ -112,7 +112,7 @@ class GameController
     // 2) Enemigos contra el avion (choque)
     for (Enemigo e : enemigos)
     {
-      if (skyhawk.colisionaCon(e.x, e.y))
+      if (skyhawk.colisionaCon(e.getX(), e.getY()))
       {
         skyhawk.recibirDanio(1);
         e.reaparecer();   // el enemigo que choco desaparece (aparece uno nuevo)
@@ -124,13 +124,13 @@ class GameController
     for (ProyectilEnemigo bala : balasEnemigo)
     {
       boolean golpeo = false;
-      if (skyhawk.colisionaCon(bala.x, bala.y))
+      if (skyhawk.colisionaCon(bala.getX(), bala.getY()))
       {
         skyhawk.recibirDanio(1);
         golpeo = true;
       }
       // La bala se queda solo si no golpeo al avion y sigue dentro de la pantalla.
-      if (!golpeo && bala.y <= height)
+      if (!golpeo && bala.getY() <= height)
       {
         balasEnemQueSiguen.add(bala);
       }
@@ -209,6 +209,11 @@ class GameController
     textAlign(LEFT, TOP);
     textSize(16);
     text("Puntaje: " + puntaje, 10, 10);
-    text("Vida: " + skyhawk.vida, 10, 30);
+    text("Vida: " + skyhawk.getVida(), 10, 30);
   }
+
+  // Getters (encapsulamiento): el adaptador AvionSkyhawk arma las estadisticas
+  // leyendo el puntaje y los derribos solo a traves de estos metodos.
+  public int getPuntaje() { return this.puntaje; }
+  public int getEnemigosDerribados() { return this.enemigosDerribados; }
 }

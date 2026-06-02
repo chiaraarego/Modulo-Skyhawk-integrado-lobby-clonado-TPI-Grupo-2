@@ -6,8 +6,12 @@
 
 ## Leyenda de visibilidad
 - `+` público · `-` privado · `#` protegido · `$` estático
-- **(sin símbolo)** = acceso por defecto (de paquete): es lo que tienen las clases
-  `.pde` porque sus miembros no llevan modificador en el código.
+- **Atributos**: `private` (encapsulados) o `protected` cuando una subclase los
+  hereda (`Nave` → `Skyhawk`/`Enemigo`, `Proyectil` → sus balas). El resto del
+  juego los lee con **getters públicos** (`getX()`, `getPuntaje()`, ...).
+- **(sin símbolo)** = acceso por defecto (de paquete): es lo que tienen los
+  **métodos de comportamiento** (`actualizar()`, `dibujar()`, `mover()`, ...) porque
+  en el código `.pde` no llevan modificador.
 - `TIEMPO_CARGA_MS` (600) y `GAME_OVER_MS` (2500) son `static final` (constantes).
 
 ```mermaid
@@ -34,11 +38,14 @@ classDiagram
         colisionaCon(int otroX, int otroY) boolean
         recibirDanio(int cuanto) void
         estaViva() boolean
+        +getX() int
+        +getY() int
+        +getVida() int
     }
 
     class Skyhawk {
-        int velocidad
-        PImage sprite
+        -int velocidad
+        -PImage sprite
         Skyhawk(int xPos, int yPos)
         actualizar() void
         mover(Direccion direccion) void
@@ -46,8 +53,8 @@ classDiagram
     }
 
     class Enemigo {
-        int velocidad
-        PImage sprite
+        -int velocidad
+        -PImage sprite
         Enemigo(int xPos, int yPos)
         actualizar() void
         intentaDisparar() boolean
@@ -56,12 +63,14 @@ classDiagram
     }
 
     class Proyectil {
-        int x
-        int y
-        int velocidad
+        #int x
+        #int y
+        #int velocidad
         Proyectil(int xPos, int yPos)
         actualizar() void
         dibujar() void
+        +getX() int
+        +getY() int
     }
 
     class ProyectilSkyhawk {
@@ -77,12 +86,12 @@ classDiagram
     }
 
     class GameController {
-        Skyhawk skyhawk
-        ArrayList~Enemigo~ enemigos
-        ArrayList~ProyectilSkyhawk~ balasJugador
-        ArrayList~ProyectilEnemigo~ balasEnemigo
-        int puntaje
-        int enemigosDerribados
+        -Skyhawk skyhawk
+        -ArrayList~Enemigo~ enemigos
+        -ArrayList~ProyectilSkyhawk~ balasJugador
+        -ArrayList~ProyectilEnemigo~ balasEnemigo
+        -int puntaje
+        -int enemigosDerribados
         GameController()
         crearEnemigos() void
         dispararSkyhawk() void
@@ -91,6 +100,8 @@ classDiagram
         detectarColisiones() void
         leerTeclado() void
         dibujar() void
+        +getPuntaje() int
+        +getEnemigosDerribados() int
     }
 
     %% ===================== ADAPTADOR / INTEGRACIÓN CON EL LOBBY =====================

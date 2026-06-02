@@ -38,4 +38,10 @@ class Nave
   {
     return this.vida > 0;
   }
+
+  // Getters (encapsulamiento): los campos son protected para las subclases,
+  // y el resto del juego lee la posicion/vida solo a traves de estos metodos.
+  public int getX() { return this.x; }
+  public int getY() { return this.y; }
+  public int getVida() { return this.vida; }
 }
