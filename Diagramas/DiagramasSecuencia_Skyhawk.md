@@ -108,7 +108,7 @@ globales de Processing (`keyPressed`, `key`, `keyCode`) en cada cuadro. Esto se 
 
 ```mermaid
 sequenceDiagram
-    participant Proc as Processing<br/>(draw 60 fps)
+    participant Proc as Processing
     participant Home as HomeJuego
     participant Mod as AvionSkyhawk
     participant Game as GameController
