@@ -4,14 +4,12 @@ class GameController
   private ArrayList<Enemigo> enemigos;              // los aviones enemigos que caen
   private ArrayList<ProyectilSkyhawk> balasJugador; // las balas que dispara el avion
   private ArrayList<ProyectilEnemigo> balasEnemigo; // las balas que disparan los enemigos
-  private int puntaje;
-  private int enemigosDerribados;
+  private Registro_Estadistica_Sky registroEstadistica; // recolecta las stats de la partida
 
   GameController()
   {
     // "Cargar la partida": estado inicial
-    puntaje = 0;
-    enemigosDerribados = 0;
+    registroEstadistica = new Registro_Estadistica_Sky();
     // "Cargar el avion": centrado, en la parte de abajo
     skyhawk = new Skyhawk(width / 2, height - 80);
     // "Cargar los enemigos": una lista de aviones que caen desde arriba
@@ -33,13 +31,11 @@ class GameController
     }
   }
 
-  // Crea una bala nueva en la punta del avion.
-  // La llama keyPressed() (en el archivo principal) cuando se aprieta espacio.
+  // Le pide la bala al avion (el avion sabe desde donde sale) y la guarda
+  // en la lista de balas del jugador.
   void dispararSkyhawk()
   {
-    int xBala = skyhawk.getX();
-    int yBala = skyhawk.getY() - 20;   // sale desde la punta del avion
-    balasJugador.add(new ProyectilSkyhawk(xBala, yBala));
+    balasJugador.add(skyhawk.disparar());
   }
 
   // Devuelve true si el avion del jugador sigue vivo (lo usa el game over).
@@ -59,8 +55,8 @@ class GameController
       e.actualizar();
       if (e.intentaDisparar())
       {
-        // La bala sale desde abajo del enemigo (e.getY() + 20) y baja por la pantalla.
-        balasEnemigo.add(new ProyectilEnemigo(e.getX(), e.getY() + 20));
+        // El enemigo arma su propia bala (sabe desde donde sale); aca solo la guardamos.
+        balasEnemigo.add(e.disparar());
       }
     }
 
@@ -95,8 +91,7 @@ class GameController
           golpeo = true;
           if (!e.estaViva())   // si se quedo sin vida, lo derribamos
           {
-            puntaje = puntaje + 10;
-            enemigosDerribados = enemigosDerribados + 1;
+            registroEstadistica.registrarEnemigoEliminado(10);
             e.reaparecer();    // aparece uno nuevo arriba
           }
         }
@@ -208,12 +203,11 @@ class GameController
     fill(255);
     textAlign(LEFT, TOP);
     textSize(16);
-    text("Puntaje: " + puntaje, 10, 10);
+    text("Puntaje: " + registroEstadistica.getPuntaje(), 10, 10);
     text("Vida: " + skyhawk.getVida(), 10, 30);
   }
 
-  // Getters (encapsulamiento): el adaptador AvionSkyhawk arma las estadisticas
-  // leyendo el puntaje y los derribos solo a traves de estos metodos.
-  public int getPuntaje() { return this.puntaje; }
-  public int getEnemigosDerribados() { return this.enemigosDerribados; }
+  // Getter (encapsulamiento): el adaptador AvionSkyhawk arma las estadisticas
+  // leyendo el registro de la partida a traves de este metodo.
+  public Registro_Estadistica_Sky getRegistroEstadistica() { return this.registroEstadistica; }
 }

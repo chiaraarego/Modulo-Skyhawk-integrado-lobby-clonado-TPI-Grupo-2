@@ -71,18 +71,28 @@ class AvionSkyhawk implements ModuloJuego {
     long tiempoSeg = tiempoInicio > 0
         ? (System.currentTimeMillis() - tiempoInicio) / 1000
         : 0;
-    int puntaje = (game != null) ? game.getPuntaje() : 0;
-    int derribados = (game != null) ? game.getEnemigosDerribados() : 0;
-    // Es un survival: no hay condicion de victoria, asi que cada partida
-    // terminada cuenta como jugada (1) y perdida (1).
+
+    if (game == null) {
+      // Finalizado antes de crear la partida (p. ej. durante la carga).
+      return new EstadisticasGenerales(getNombreModulo(), 0, 1, 0, 1, 0, tiempoSeg);
+    }
+
+    // El registro junto las stats durante la partida; aca solo cerramos el tiempo
+    // y mapeamos su contenido al DTO que entiende el lobby.
+    Registro_Estadistica_Sky registro = game.getRegistroEstadistica();
+    registro.registrarTiempo(tiempoSeg);
+
+    // Es un survival: la situacion siempre es DERROTA (no hay victoria todavia),
+    // asi que cada partida cuenta como jugada (1) y perdida (1).
+    boolean gano = "VICTORIA".equals(registro.getSituacionPartida());
     return new EstadisticasGenerales(
         getNombreModulo(),
-        puntaje,
-        1,            // partidas jugadas
-        0,            // partidas ganadas
-        1,            // partidas perdidas
-        derribados,   // enemigos destruidos
-        tiempoSeg);   // tiempo jugado en segundos
+        registro.getPuntaje(),
+        registro.getPartidasJugadas(),
+        gano ? 1 : 0,
+        gano ? 0 : 1,
+        registro.getEnemigosEliminados(),
+        registro.getTiempoJugado());
   }
 
   public void reset() {
