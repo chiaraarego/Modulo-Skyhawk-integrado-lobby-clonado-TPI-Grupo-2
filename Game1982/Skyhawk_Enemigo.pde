@@ -27,10 +27,17 @@ class Enemigo extends Nave
   // Decide al azar si este enemigo dispara en este cuadro.
   // random(1) da un numero entre 0 y 1; como pedimos que sea menor a 0.01,
   // dispara mas o menos 1 de cada 100 cuadros (poca frecuencia para que sea jugable).
-  // El GameController es el que crea la bala (igual que con el disparo del jugador).
   boolean intentaDisparar()
   {
     return random(1) < 0.01;
+  }
+
+  // Crea una bala nueva abajo del enemigo y la devuelve.
+  // El GameController es el que la guarda en su lista de balas
+  // (mismo criterio que el disparo del jugador).
+  ProyectilEnemigo disparar()
+  {
+    return new ProyectilEnemigo(this.x, this.y + 20);
   }
 
   // Lo manda de vuelta arriba, en una columna al azar y con la vida llena.

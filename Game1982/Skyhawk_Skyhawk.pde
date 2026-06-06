@@ -18,6 +18,13 @@ class Skyhawk extends Nave
     // (llama a mover(...)). Por eso aca todavia no hay nada propio.
   }
 
+  // Crea una bala nueva en la punta del avion (arriba) y la devuelve.
+  // El GameController es el que la guarda en su lista de balas.
+  ProyectilSkyhawk disparar()
+  {
+    return new ProyectilSkyhawk(this.x, this.y - 20);
+  }
+
   // Mueve el avion un paso en la direccion indicada,
   // sin dejar que se salga de la pantalla.
   void mover(Direccion direccion)
